@@ -5,6 +5,7 @@
 
 #include "kgsl_device.h"
 #include "kgsl_sync.h"
+#include <linux/pm_qos.h>
 
 static const struct kgsl_ioctl kgsl_ioctl_funcs[] = {
 	KGSL_IOCTL_FUNC(IOCTL_KGSL_DEVICE_GETPROPERTY,
