@@ -15,7 +15,9 @@ obj-$(CONFIG_NET)		+= $(tmp-y)
 obj-$(CONFIG_LLC)		+= llc/
 obj-$(CONFIG_NET)		+= ethernet/ 802/ sched/ netlink/ bpf/
 obj-$(CONFIG_NETFILTER)		+= netfilter/
+ifeq ($(CONFIG_QGKI),y)
 obj-$(CONFIG_WIREGUARD)		+= wireguard/
+endif
 obj-$(CONFIG_INET)		+= ipv4/
 obj-$(CONFIG_TLS)		+= tls/
 obj-$(CONFIG_XFRM)		+= xfrm/
