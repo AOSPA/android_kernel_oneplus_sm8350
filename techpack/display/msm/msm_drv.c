@@ -625,10 +625,18 @@ static int msm_drm_display_thread_create(struct sched_param param,
 		priv->disp_thread[i].crtc_id = priv->crtcs[i]->base.id;
 		kthread_init_worker(&priv->disp_thread[i].worker);
 		priv->disp_thread[i].dev = ddev;
+#ifdef CONFIG_QGKI
+		priv->disp_thread[i].thread =
+			kthread_run_perf_critical(cpu_prime_mask,
+				kthread_worker_fn,
+				&priv->disp_thread[i].worker,
+				"crtc_commit:%d", priv->disp_thread[i].crtc_id);
+#else
 		priv->disp_thread[i].thread =
 			kthread_run(kthread_worker_fn,
 				&priv->disp_thread[i].worker,
 				"crtc_commit:%d", priv->disp_thread[i].crtc_id);
+#endif
 		ret = sched_setscheduler(priv->disp_thread[i].thread,
 							SCHED_FIFO, &param);
 		if (ret)
@@ -644,10 +652,18 @@ static int msm_drm_display_thread_create(struct sched_param param,
 		priv->event_thread[i].crtc_id = priv->crtcs[i]->base.id;
 		kthread_init_worker(&priv->event_thread[i].worker);
 		priv->event_thread[i].dev = ddev;
+#ifdef CONFIG_QGKI
 		priv->event_thread[i].thread =
-			kthread_run(kthread_worker_fn,
+			kthread_run_perf_critical(cpu_prime_mask,
+				kthread_worker_fn,
 				&priv->event_thread[i].worker,
 				"crtc_event:%d", priv->event_thread[i].crtc_id);
+#else
+		priv->disp_thread[i].thread =
+			kthread_run(kthread_worker_fn,
+				&priv->disp_thread[i].worker,
+				"crtc_commit:%d", priv->disp_thread[i].crtc_id);
+#endif
 		/**
 		 * event thread should also run at same priority as disp_thread
 		 * because it is handling frame_done events. A lower priority
@@ -692,9 +708,13 @@ static int msm_drm_display_thread_create(struct sched_param param,
 	 * other important events.
 	 */
 	kthread_init_worker(&priv->pp_event_worker);
+#ifdef CONFIG_QGKI
+	priv->pp_event_thread = kthread_run_perf_critical(cpu_prime_mask,
+			kthread_worker_fn, &priv->pp_event_worker, "pp_event");
+#else
 	priv->pp_event_thread = kthread_run(kthread_worker_fn,
 			&priv->pp_event_worker, "pp_event");
-
+#endif
 	ret = sched_setscheduler(priv->pp_event_thread,
 						SCHED_FIFO, &param);
 	if (ret)
