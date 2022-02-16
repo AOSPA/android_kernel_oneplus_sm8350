@@ -607,10 +607,10 @@ static void sugov_walt_adjust(struct sugov_cpu *sg_cpu, unsigned long *util,
 	if (is_hiload && nl >= mult_frac(cpu_util, NL_RATIO, 100))
 		*util = *max;
 
-	if (sg_policy->tunables->pl && pl > *util) {
+	if (sg_policy->tunables->pl) {
 		if (conservative_pl())
 			pl = mult_frac(pl, TARGET_LOAD, 100);
-		*util = (*util + pl) / 2;
+		*util = max(*util, pl);
 	}
 }
 
@@ -1162,7 +1162,7 @@ static void sugov_tunables_save(struct cpufreq_policy *policy,
 	cached->down_rate_limit_us = tunables->down_rate_limit_us;
 }
 
-static void sugov_tunables_free(struct sugov_tunables *tunables)
+static void sugov_clear_global_tunables(void)
 {
 	if (!have_governor_per_policy())
 		global_tunables = NULL;
@@ -1300,7 +1300,7 @@ static void sugov_exit(struct cpufreq_policy *policy)
 	policy->governor_data = NULL;
 	if (!count) {
 		sugov_tunables_save(policy, tunables);
-		sugov_tunables_free(tunables);
+		sugov_clear_global_tunables();
 	}
 
 	mutex_unlock(&global_tunables_lock);
