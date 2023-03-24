@@ -4986,10 +4986,10 @@
 	/* brightness config */
 	qcom,mdss-dsi-bl-min-level = <1>;
 	qcom,mdss-dsi-bl-normal-max-level = <2047>;
-	qcom,mdss-dsi-bl-max-level = <2047>;
+	qcom,mdss-dsi-bl-max-level = <4095>;
 	qcom,mdss-brightness-default-level = <400>;
 	qcom,mdss-brightness-normal-max-level = <2047>;
-	qcom,mdss-brightness-max-level = <2047>;
+	qcom,mdss-brightness-max-level = <4095>;
 	qcom,mdss-dsi-dc-backlight-level = <520>;
 	oplus,dsi-fod-brightness = <0 0xff>,
 			<2 0xf2>,
@@ -5143,9 +5143,6 @@
 			qcom,display-topology = <1 1 1>,<2 2 1>;
 			qcom,default-topology-index = <1>;
 		};
-		/delete-node/ timing@fhd_sdc_60;
-		/delete-node/ timing@fhd_sdc_90;
-		/delete-node/ timing@fhd_sdc_120;
 		/delete-node/ timing@fhd_oplus_60;
 		/delete-node/ timing@fhd_oplus_72;
 		/delete-node/ timing@fhd_oplus_90;
