@@ -367,11 +367,7 @@
 
 	pil_cdsp_mem: pil_cdsp_region@89700000 {
 		no-map;
-		//#ifndef OPLUS_FEATURE_SENSOR_DRIVER
-		//reg = <0x0 0x89700000 0x0 0x1e00000>;
-		//#else
-		reg = <0x0 0x89700000 0x0 0x1400000>;
-		//#endif
+		reg = <0x0 0x89700000 0x0 0x1e00000>;
 	};
 
 	pil_ipa_fw_mem: pil_ipa_fw_region@8b500000 {
@@ -401,18 +397,12 @@
 
 	hyp_reserved_mem: qheebsp_dbg_vm_hyp_region@d0000000 {
 		no-map;
-		//#ifdef OPLUS_FEATURE_BOOT_SECURITY
-		/* 2020/12/16, delete for not use TVM TUI */
-		//reg = <0x0 0xd0000000 0x0 0x800000>;
-		//#endif /* OPLUS_FEATURE_BOOT_SECURITY */
+		reg = <0x0 0xd0000000 0x0 0x800000>;
 	};
 
 	pil_trustedvm_mem: pil_trustedvm_region@d0800000 {
 		no-map;
-		//#ifdef OPLUS_FEATURE_BOOT_SECURITY
-		/* 2020/12/16, delete for not use TVM TUI */
-		//reg = <0x0 0xd0800000 0x0 0x76f7000>;
-		//#endif /* OPLUS_FEATURE_BOOT_SECURITY */
+		reg = <0x0 0xd0800000 0x0 0x76f7000>;
 	};
 
 	qrtr_shbuf: qrtr-shmem {
@@ -496,11 +486,7 @@
 		alloc-ranges = <0x0 0x00000000 0x0 0xffffffff>;
 		reusable;
 		alignment = <0x0 0x400000>;
-		#ifndef OPLUS_BUG_STABILITY
-		#size = <0x0 0x1400000>;
-		#else
-		size = <0x0 0x1E00000>;
-		#endif /* OPLUS_BUG_STABILITY */
+		size = <0x0 0x1400000>;
 	};
 
 	/* global autoconfigured region for contiguous allocations */
@@ -1297,8 +1283,6 @@
 				<DCC_READ 0x91a5100 1 0>,
 				<DCC_READ 0x91ad100 1 0>,
 				<DCC_READ 0x610110 5 0>,
-				/* add by yanghao remove shrm dcc for core hang issue */
-				/*
 				<DCC_WRITE 0x06e0a00c 0x00600007 1>,
 				<DCC_WRITE 0x06e0a01c 0x00136800 1>,
 				<DCC_READ 0x06e0a014 1 1>,
@@ -1367,7 +1351,6 @@
 				<DCC_WRITE 0x06e0a01c 0x0013b6a0 1>,
 				<DCC_WRITE 0x06e0a01c 0x00f1e000 1>,
 				<DCC_WRITE 0x06e0a008 0x00000007 1>,
-				*/
 				<DCC_READ 0x09067e00 124 0>;
 		};
 
@@ -1817,8 +1800,6 @@
 				<DCC_READ 0x91a5100 1 0>,
 				<DCC_READ 0x91ad100 1 0>,
 				<DCC_READ 0x610110 5 0>,
-				/* add by yanghao remove shrm dcc for core hang issue */
-				/*
 				<DCC_WRITE 0x06e0a00c 0x00600007 1>,
 				<DCC_WRITE 0x06e0a01c 0x00136800 1>,
 				<DCC_READ 0x06e0a014 1 1>,
@@ -1887,7 +1868,6 @@
 				<DCC_WRITE 0x06e0a01c 0x0013b6a0 1>,
 				<DCC_WRITE 0x06e0a01c 0x00f1e000 1>,
 				<DCC_WRITE 0x06e0a008 0x00000007 1>,
-				*/
 				<DCC_READ 0x09067e00 124 0>;
 		};
 
@@ -4687,6 +4667,7 @@
 		qcom,ipa-holb-monitor-max-cnt-11ad = <10>;
 		qcom,tx-wrapper-cache-max-size = <400>;
 		qcom,ipa-gpi-event-rp-ddr;
+		qcom,register-collection-on-crash;
 		clock-names = "core_clk";
 		clocks = <&clock_rpmh RPMH_IPA_CLK>;
 		qcom,interconnect,num-cases = <5>;
@@ -5423,15 +5404,15 @@
 		qcom,same-dt-multi-dev;
 
 		vdd-wlan-aon-supply = <&S2E>;
-		qcom,vdd-wlan-aon-config = <950000 952000 0 0 1>;
+		qcom,vdd-wlan-aon-config = <1012000 1012000 0 0 1>;
 		vdd-wlan-dig-supply = <&S11B>;
-		qcom,vdd-wlan-dig-config = <950000 952000 0 0 1>;
+		qcom,vdd-wlan-dig-config = <1012000 1012000 0 0 1>;
 		vdd-wlan-io-supply = <&S10B>;
 		qcom,vdd-wlan-io-config = <1800000 1800000 0 0 1>;
 		vdd-wlan-rfa1-supply = <&S1C>;
-		qcom,vdd-wlan-rfa1-config = <1880000 1880000 0 0 1>;
+		qcom,vdd-wlan-rfa1-config = <1900000 1952000 0 0 1>;
 		vdd-wlan-rfa2-supply = <&S12B>;
-		qcom,vdd-wlan-rfa2-config = <1350000 1350000 0 0 1>;
+		qcom,vdd-wlan-rfa2-config = <1350000 1360000 0 0 1>;
 		wlan-ant-switch-supply = <&L7E>;
 		qcom,wlan-ant-switch-config = <2800000 2800000 0 0 0>;
 
@@ -5682,10 +5663,10 @@
 		qcom,bt-vdd-rfa2-supply = <&S12B>;
 		qcom,bt-vdd-asd-supply = <&L7E>;
 
-		qcom,bt-vdd-aon-config = <950000 950000 0 0>;
-		qcom,bt-vdd-dig-config = <950000 950000 0 0>;
-		qcom,bt-vdd-rfa1-config = <1880000 1880000 0 1>;
-		qcom,bt-vdd-rfa2-config = <1350000 1350000 0 1>;
+		qcom,bt-vdd-aon-config = <1012000 1012000 0 1>;
+		qcom,bt-vdd-dig-config = <1012000 1012000 0 1>;
+		qcom,bt-vdd-rfa1-config = <1900000 1952000 0 1>;
+		qcom,bt-vdd-rfa2-config = <1350000 1360000 0 1>;
 		qcom,bt-vdd-asd-config = <2800000 2800000 0 1>;
 	};
 
