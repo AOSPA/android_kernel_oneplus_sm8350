@@ -2693,7 +2693,7 @@ static void syna_tcm_enable_gesture_mask(void *chip_data, uint32_t enable)
 	TPD_INFO("%s: enable(%d), mask 0x%0X\n", __func__, enable,
 		 tcm_info->gesture_mask);
 
-	if (enable) {
+	if (!enable) {
 		retval = syna_tcm_set_dynamic_config(tcm_info,
 						     DC_GESTURE_MASK,
 						     tcm_info->gesture_mask);
@@ -6021,33 +6021,6 @@ static int syna_tcm_sensitive_lv_set(void *chip_data, int level)
 	return 0;
 }
 
-static void syna_set_gesture_state(void *chip_data, int state)
-{
-	struct syna_tcm_data *tcm_info = (struct syna_tcm_data *)chip_data;
-	uint16_t state_inchip = 0;
-
-	SET_GESTURE_BIT(state, DOU_TAP, state_inchip, 0);
-	SET_GESTURE_BIT(state, UP_VEE, state_inchip, 2);
-	SET_GESTURE_BIT(state, DOWN_VEE, state_inchip, 1);
-	SET_GESTURE_BIT(state, RIGHT_VEE, state_inchip, 3);
-	SET_GESTURE_BIT(state, LEFT_VEE, state_inchip, 4);
-	SET_GESTURE_BIT(state, CIRCLE_GESTURE, state_inchip, 5);
-	SET_GESTURE_BIT(state, DOU_SWIP, state_inchip, 6);
-	SET_GESTURE_BIT(state, LEFT2RIGHT_SWIP, state_inchip, 7);
-	SET_GESTURE_BIT(state, RIGHT2LEFT_SWIP, state_inchip, 8);
-	SET_GESTURE_BIT(state, UP2DOWN_SWIP, state_inchip, 9);
-	SET_GESTURE_BIT(state, DOWN2UP_SWIP, state_inchip, 10);
-	SET_GESTURE_BIT(state, M_GESTRUE, state_inchip, 11);
-	SET_GESTURE_BIT(state, W_GESTURE, state_inchip, 12);
-	SET_GESTURE_BIT(state, SINGLE_TAP, state_inchip, 13);
-	SET_GESTURE_BIT(state, HEART, state_inchip, 14);
-	SET_GESTURE_BIT(state, S_GESTURE, state_inchip, 15);
-
-	tcm_info->gesture_mask = state_inchip;
-	TPD_INFO("%s:state:%d, gesture_mask is 0x%0X!\n", __func__, state,
-		 tcm_info->gesture_mask);
-}
-
 static int syna_tcm_send_temperature(void *chip_data, int temp, bool status)
 {
 	struct syna_tcm_data *tcm_info = (struct syna_tcm_data *)chip_data;
@@ -6136,7 +6109,7 @@ static struct oplus_touchpanel_operations syna_tcm_ops = {
 	.set_touch_direction		= syna_set_touch_direction,
 	.get_touch_direction		= syna_get_touch_direction,
 	.freq_hop_trigger		= syna_freq_hop_trigger,
-	.enable_gesture_mask		= syna_tcm_enable_gesture_mask,
+	//.enable_gesture_mask		= syna_tcm_enable_gesture_mask,
 	.speed_up_resume_prepare	= syna_resume_prepare,
 	.specific_resume_operate	= syna_specific_resume_operate,
 	.smooth_lv_set			= syna_tcm_smooth_lv_set,
@@ -6146,7 +6119,6 @@ static struct oplus_touchpanel_operations syna_tcm_ops = {
 	.screenon_fingerprint_info_auto	= syna_tcm_fingerprint_info_auto,
 	.tp_refresh_switch		= syna_report_refresh_switch,
 	.rate_white_list_ctrl		= syna_rate_white_list_ctrl,
-	.set_gesture_state         	= syna_set_gesture_state,
 	.get_touch_points_help		= syna_get_touch_points_help,
 	.set_high_frame_rate            = syna_tcm_set_high_frame_rate,
 	.send_temperature		= syna_tcm_send_temperature,
