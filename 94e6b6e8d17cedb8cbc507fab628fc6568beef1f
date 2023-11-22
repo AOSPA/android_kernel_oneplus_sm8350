@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0edf1964_27e59f9c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000012
+      },
+      "writtenOn": "2023-11-22T19:08:13Z",
+      "side": 1,
+      "message": "why bother having the version string here.  just another thing to change every year.  use aospa",
+      "revId": "94e6b6e8d17cedb8cbc507fab628fc6568beef1f",
+      "serverId": "3162e3d8-d894-470e-abd9-724f7b0effad"
+    }
+  ]
+}
